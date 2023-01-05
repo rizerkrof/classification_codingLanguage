@@ -1,0 +1,5 @@
+batch_size: 32
+epochs: 1
+dense_dim: 64
+min_samples_per_label: 10
+verbose: 1

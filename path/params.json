@@ -1,0 +1,1 @@
+{"batch_size": 3, "epochs": 10, "dense_dim": 64, "min_samples_per_label": 5, "verbose": 1}

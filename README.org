@@ -1,0 +1,69 @@
+#+TITLE:   README
+
+* Table of Contents :TOC_3:noexport:
+- [[#description][Description]]
+  - [[#context][Context]]
+  - [[#maintainers][Maintainers]]
+- [[#prerequisites][Prerequisites]]
+- [[#installation][Installation]]
+- [[#run-flask-micro-service-application][Run flask micro-service application]]
+- [[#call-the-application][Call the application]]
+  - [[#example][Example]]
+- [[#run-unit-tests][Run unit tests]]
+  - [[#predict-tests][Predict tests]]
+  - [[#preprocessing-tests][Preprocessing tests]]
+  - [[#training-tests][Training tests]]
+
+* Description
+This repository host a micro-service that aims to predict code language labels from a text
+** Context
+This project was made as an example to deploy a machine learning algorithm in production
+** Maintainers
++ [[https://github.com/rizerkrof][@Doudou]] (Author)
+
+* Prerequisites
++ Python 3.7
++ Conda
+
+* Installation
+#+begin_src sh
+git clone https://github.com/rizerkrof/classification_codingLanguage.git
+conda env create -n classification_codingLanguage -f environment.yml
+conda activate classification_codingLanguage
+#+end_src
+
+* Run flask micro-service application
+#+begin_src sh
+python3 ./predict/predict/app.py
+#+end_src
+* Call the application
+The route is under ~http://localhost/predict~. It is a ~POST~ route that needs a JSON body with 2 specific arguments:
++ ~textsToPredict~ : a list of string. Each string value correspond to the text you want to predict.
++ ~top_k~ : The limit number of the prediction you want to return
+
+** Example
+We want to predict the labels associated to "please predict ruby" and "now php".
+
+Run the application and enter the following command in another terminal.
+#+begin_src sh
+curl -X POST -H "Content-Type: application/json" -d '{"textsToPredict": ["please predict ruby", "now php"], "top_k":2}' http://localhost:5000/predict
+#+end_src
+The result is obviously:
+#+begin_src sh
+["ruby-on-rails", "php"]
+#+end_src
+
+* Run unit tests
+At the root of the project:
+** Predict tests
+#+begin_src sh
+python3 -m unittest discover --top-level-directory=. --start-directory=./predict/tests
+#+end_src
+** Preprocessing tests
+#+begin_src sh
+python3 -m unittest discover --top-level-directory=. --start-directory=./preprocessing/tests
+#+end_src
+** Training tests
+#+begin_src sh
+python3 -m unittest discover --top-level-directory=. --start-directory=./train/tests
+#+end_src
